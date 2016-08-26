@@ -8,10 +8,7 @@ import com.iworker.bigdata.common.Constants;
 import com.iworker.bigdata.vo.TopRankVO;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.iworker.bigdata.common.Constants.*;
 import static com.iworker.bigdata.common.CommonUtil.*;
@@ -52,7 +49,7 @@ public class SaleTopRankService {
             //
             List<OrgIncludeOrgStore> orgIncludeOrgStores = new ArrayList<>();
 
-            //计算需要处理的部门或门店
+            //计算需要处理的部门
             TopRankVO.OrgStoreShowList showList = (TopRankVO.OrgStoreShowList)topRankVO.getShowList();
 
             TopRankVO.OrgStoreDataList dataList = (TopRankVO.OrgStoreDataList) topRankVO.getDataList();
@@ -86,9 +83,21 @@ public class SaleTopRankService {
                 //处理门店
                 for (TopRankVO.Store store : stores) {
 
-                    
+                    String orgLongId1 = store.getOrgLongId();
+
+                    if (orgLongId1.startsWith(orgLongId)) {
+                        includedStoreIds.addAll(Arrays.asList(store.getStoreIds().split(",")));
+                    }
                 }
+
+                orgIncludeOrgStore.setIncludedOrgIds(includedOrgIds);
+                orgIncludeOrgStore.setIncludedStoreIds(includedStoreIds);
+
+                orgIncludeOrgStores.add(orgIncludeOrgStore);
             }
+
+
+            // TODO: 2016/8/26 0026 需要处理的门店
 
 
         }
